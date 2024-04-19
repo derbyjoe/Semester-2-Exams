@@ -1,0 +1,13 @@
+- hosts: all
+  become: yes
+  tasks:
+    - name: Execute LAMP installation script on Slave
+      script: /vagrant/install_lamp.sh
+      when: inventory_hostname == "slave"
+
+    - name: Check server uptime every midnight using cron
+      cron:
+        name: "check uptime"
+        minute: "0"
+        hour: "0"
+        job: "uptime >> /var/log/uptime.log"
